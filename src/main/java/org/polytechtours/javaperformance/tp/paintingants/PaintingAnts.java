@@ -8,8 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.StringTokenizer;
-import java.util.Vector;
+import java.util.*;
 
 import javax.swing.Timer;
 
@@ -23,7 +22,8 @@ public class PaintingAnts extends java.applet.Applet implements Runnable {
   private CPainting mPainting;
 
   // les fourmis
-  private Vector<CFourmi> mColonie = new Vector<CFourmi>();
+  private List<CFourmi> mColonie = Collections.synchronizedList(new ArrayList());
+  //private Vector<CFourmi> mColonie = new Vector<CFourmi>();
   private CColonie mColony;
 
   private Thread mApplis, mThreadColony;
@@ -376,7 +376,7 @@ public class PaintingAnts extends java.applet.Applet implements Runnable {
         // création de la fourmi
         lFourmi = new CFourmi(lCouleurDeposee, lCouleurSuivie, lProbaTD, lProbaG, lProbaD, lProbaSuivre, mPainting,
             lTypeDeplacement, lInit_x, lInit_y, lInitDirection, lTaille, lSeuilLuminance, this);
-        mColonie.addElement(lFourmi);
+        synchronized (mColonie){mColonie.add(lFourmi);}
         lNbFourmis++;
       }
     } else // initialisation aléatoire des fourmis
@@ -436,7 +436,7 @@ public class PaintingAnts extends java.applet.Applet implements Runnable {
         // création et ajout de la fourmi dans la colonie
         lFourmi = new CFourmi(lTabColor[i], lTabColor[lColor], lProbaTD, lProbaG, lProbaD, lProbaSuivre, mPainting,
             lTypeDeplacement, lInit_x, lInit_y, lInitDirection, lTaille, lSeuilLuminance, this);
-        mColonie.addElement(lFourmi);
+        synchronized (mColonie){mColonie.add(lFourmi);}
       }
     }
     // on affiche le nombre de fourmis
