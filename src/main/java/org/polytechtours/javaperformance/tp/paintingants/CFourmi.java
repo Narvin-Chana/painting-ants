@@ -2,7 +2,8 @@ package org.polytechtours.javaperformance.tp.paintingants;
 // package PaintingAnts_v3;
 // version : 4.0
 
-import java.awt.Color;
+import javafx.scene.paint.Color;
+
 import java.util.Random;
 
 public class CFourmi {
@@ -13,7 +14,7 @@ public class CFourmi {
   private static Random GenerateurAleatoire = new Random();
   // couleur déposé par la fourmi
   private Color mCouleurDeposee;
-  private float mLuminanceCouleurSuivie;
+  private double mLuminanceCouleurSuivie;
   // objet graphique sur lequel les fourmis peuvent peindre
   private CPainting mPainting;
   // Coordonées de la fourmi
@@ -110,9 +111,9 @@ public class CFourmi {
     i = modulo(x + CFourmi.mIncDirection[modulo(mDirection - mDecalDir, 8)][0], mPainting.getLargeur());
     j = modulo(y + CFourmi.mIncDirection[modulo(mDirection - mDecalDir, 8)][1], mPainting.getHauteur());
     if (mApplis.mBaseImage != null) {
-      lCouleur = new Color(mApplis.mBaseImage.getRGB(i, j));
+      lCouleur = Color.grayRgb(mApplis.mBaseImage.getRGB(i, j));
     } else {
-      lCouleur = new Color(mPainting.getCouleur(i, j).getRGB());
+      lCouleur = mPainting.getCouleur(i, j);
     }
     if (testCouleur(lCouleur)) {
       dir[0] = 1;
@@ -121,9 +122,9 @@ public class CFourmi {
     i = modulo(x + CFourmi.mIncDirection[mDirection][0], mPainting.getLargeur());
     j = modulo(y + CFourmi.mIncDirection[mDirection][1], mPainting.getHauteur());
     if (mApplis.mBaseImage != null) {
-      lCouleur = new Color(mApplis.mBaseImage.getRGB(i, j));
+      lCouleur = Color.grayRgb(mApplis.mBaseImage.getRGB(i, j));
     } else {
-      lCouleur = new Color(mPainting.getCouleur(i, j).getRGB());
+      lCouleur = mPainting.getCouleur(i, j);
     }
     if (testCouleur(lCouleur)) {
       dir[1] = 1;
@@ -131,9 +132,9 @@ public class CFourmi {
     i = modulo(x + CFourmi.mIncDirection[modulo(mDirection + mDecalDir, 8)][0], mPainting.getLargeur());
     j = modulo(y + CFourmi.mIncDirection[modulo(mDirection + mDecalDir, 8)][1], mPainting.getHauteur());
     if (mApplis.mBaseImage != null) {
-      lCouleur = new Color(mApplis.mBaseImage.getRGB(i, j));
+      lCouleur = Color.grayRgb(mApplis.mBaseImage.getRGB(i, j));
     } else {
-      lCouleur = new Color(mPainting.getCouleur(i, j).getRGB());
+      lCouleur = mPainting.getCouleur(i, j);
     }
     if (testCouleur(lCouleur)) {
       dir[2] = 1;
@@ -223,7 +224,7 @@ public class CFourmi {
    */
   private boolean testCouleur(Color pCouleur) {
     boolean lReponse = false;
-    float lLuminance;
+    double lLuminance;
 
     /* on calcule la luminance */
     lLuminance = 0.2426f * pCouleur.getRed() + 0.7152f * pCouleur.getGreen() + 0.0722f * pCouleur.getBlue();
