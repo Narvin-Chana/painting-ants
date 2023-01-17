@@ -8,19 +8,15 @@ import javafx.stage.Stage;
 
 
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
 import javax.swing.Timer;
 
 public class PaintingAnts extends Application {
-    private static final long serialVersionUID = 1L;
     // parametres
     private int mLargeur;
     private int mHauteur;
@@ -117,7 +113,12 @@ public class PaintingAnts extends Application {
         root.getChildren().add(mPainting);
         stage.setScene(new Scene(root));
 
+
         stage.show();
+
+        mPainting.init();
+
+        startSimulation();
     }
 
     /****************************************************************************/
@@ -407,80 +408,36 @@ public class PaintingAnts extends Application {
         // System.out.println("Nombre de Fourmis:"+lNbFourmis);
     }
 
-    /*************************************************************************************************
-     * Titre : boolean testCouleur() Description : fonction testant l'égalité de
-     * deux couleurs
-     *
-     */
-    public void run() {
-        // System.out.println(this.getName()+ ":run()");
 
-        int i;
-        String lMessage;
-
-        mPainting.init();
-
-        Thread currentThread = Thread.currentThread();
-
-        /*
-         * for ( i=0 ; i<mColonie.size() ; i++ ) {
-         * ((CFourmi)mColonie.elementAt(i)).start(); }
-         */
-
-        mThreadColony.start();
-
-        while (mApplis == currentThread) {
-            if (mPause) {
-                lMessage = "pause";
-            } else {
-                synchronized (this) {
-                    lMessage = "running (" + lastFps + ") ";
-                }
-
-                synchronized (mMutexCompteur) {
-                    mCompteur %= 10000;
-                    for (i = 0; i < mCompteur / 1000; i++) {
-                        lMessage += ".";
-                    }
-                }
-
-            }
-            //showStatus(lMessage);
-
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                //showStatus(e.toString());
-            }
-        }
-    }
 
     /****************************************************************************/
     /**
      * Lancer l'applet
      */
 
-    public void start() {
+    public void startSimulation() {
         // System.out.println(this.getName()+ ":start()");
-        mColony = new CColonie(mColonie, this);
+        mColony = new CColonie(mColonie, this, mPainting);
         mThreadColony = new Thread(mColony);
         mThreadColony.setPriority(Thread.MIN_PRIORITY);
+        mThreadColony.start();
 
-        fpsTimer = new Timer(1000, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                updateFPS();
-            }
-        });
-        fpsTimer.setRepeats(true);
-        fpsTimer.start();
+
+        // fpsTimer = new Timer(1000, new ActionListener() {
+        //     @Override
+        //     public void actionPerformed(ActionEvent e) {
+        //         updateFPS();
+        //     }
+        // });
+        // fpsTimer.setRepeats(true);
+        // fpsTimer.start();
 
         //showStatus("starting...");
         // Create the thread.
-//    mApplis = new Thread(this);
-//    // and let it start running
-//    mApplis.setPriority(Thread.MIN_PRIORITY);
-//    mApplis.start();
+        // mApplis = new Thread(new SimulationThread(mMutexCompteur, mPainting, mThreadColony));
+        // // and let it start running
+        // mApplis.setPriority(Thread.MIN_PRIORITY);
+        // mApplis.start();
     }
 
     /****************************************************************************/

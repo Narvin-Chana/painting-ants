@@ -296,14 +296,14 @@ public class CPainting extends Canvas {
    * Titre : void paint(Graphics g) Description : Surcharge de la fonction qui
    * est appelé lorsque le composant doit être redessiné
    ******************************************************************************/
-  public void paint(GraphicsContext pGraphics) {
+  public void paint() {
     int i, j;
 
     synchronized (mMutexCouleurs) {
       for (i = 0; i < mDimension.width; i++) {
         for (j = 0; j < mDimension.height; j++) {
-          pGraphics.setFill(mCouleurs[i][j]);
-          pGraphics.fillRect(i, j, 1, 1);
+          mGraphics.setFill(mCouleurs[i][j]);
+          mGraphics.fillRect(i, j, 1, 1);
         }
       }
     }
@@ -348,7 +348,7 @@ public class CPainting extends Canvas {
                   B += CPainting.mMatriceConv9[k][l] * mCouleurs[m][n].getBlue();
                 }
               }
-              lColor = Color.rgb((int) R, (int) G, (int) B);
+              lColor = Color.color(R, G, B);
 
               mGraphics.setFill(lColor);
 
@@ -376,7 +376,7 @@ public class CPainting extends Canvas {
                   B += CPainting.mMatriceConv25[k][l] * mCouleurs[m][n].getBlue();
                 }
               }
-              lColor = Color.rgb((int) R, (int) G, (int) B);
+              lColor = Color.color(R, G, B);
               mGraphics.setFill(lColor);
               m = (x + i - 2 + mDimension.width) % mDimension.width;
               n = (y + j - 2 + mDimension.height) % mDimension.height;
@@ -404,7 +404,7 @@ public class CPainting extends Canvas {
                   B += CPainting.mMatriceConv49[k][l] * mCouleurs[m][n].getBlue();
                 }
               }
-              lColor = Color.rgb((int) R, (int) G, (int) B);
+              lColor = Color.color(R, G, B);
               mGraphics.setFill(lColor);
               m = (x + i - 3 + mDimension.width) % mDimension.width;
               n = (y + j - 3 + mDimension.height) % mDimension.height;
