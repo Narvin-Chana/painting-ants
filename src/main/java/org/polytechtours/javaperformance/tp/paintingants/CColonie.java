@@ -9,10 +9,8 @@ package org.polytechtours.javaperformance.tp.paintingants;
  * the Source Creation and Management node. Right-click the template and choose
  * Open. You can then make changes to the template in the Source Editor.
  */
-import java.util.ArrayList;
-import java.util.Collections;
+
 import java.util.List;
-import java.util.Vector;
 
 public class CColonie implements Runnable {
 

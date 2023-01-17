@@ -49,7 +49,7 @@ public class CPainting extends Canvas implements MouseListener {
     // couleur du fond
     private Color mCouleurFond = new Color(255, 255, 255);
     // dimensions
-    private Dimension mDimension = new Dimension();
+    private Dimension mDimension;
 
     private PaintingAnts mApplis;
 
@@ -89,14 +89,6 @@ public class CPainting extends Canvas implements MouseListener {
         synchronized (mMutexCouleurs) {
             return mCouleurs[x][y];
         }
-    }
-
-    /******************************************************************************
-     * Titre : Color getDimension Description : Cette fonction renvoie la
-     * dimension de la peinture
-     ******************************************************************************/
-    public Dimension getDimension() {
-        return mDimension;
     }
 
     /******************************************************************************
