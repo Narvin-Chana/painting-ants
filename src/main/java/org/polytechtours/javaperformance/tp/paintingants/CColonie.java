@@ -33,18 +33,15 @@ public class CColonie implements Runnable {
   @Override
   public void run() {
 
-    while (mContinue == true) {
+    while (mContinue) {
       if (!mApplis.getPause()) {
-        for (int i = 0; i < mColonie.size(); i++) {
-          mColonie.get(i).deplacer();
+        for (CFourmi cFourmi : mColonie) {
+          cFourmi.deplacer();
           mApplis.compteur();
         }
-      } else {
-        /*
-         * try { Thread.sleep(100); } catch (InterruptedException e) { break; }
-         */
-
-      }
+      }  /*
+       * try { Thread.sleep(100); } catch (InterruptedException e) { break; }
+       */
     }
   }
 

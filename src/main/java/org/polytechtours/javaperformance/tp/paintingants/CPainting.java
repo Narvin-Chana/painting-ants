@@ -39,11 +39,11 @@ public class CPainting extends Canvas implements MouseListener {
   static private float[][] mMatriceConv49 = new float[7][7];
   // Objet de type Graphics permettant de manipuler l'affichage du Canvas
   private Graphics mGraphics;
-  // Objet ne servant que pour les bloc synchronized pour la manipulation du
+  // Objet ne servant que pour le bloc synchronized pour la manipulation du
   // tableau des couleurs
-  private Object mMutexCouleurs = new Object();
-  // tableau des couleurs, il permert de conserver en memoire l'état de chaque
-  // pixel du canvas, ce qui est necessaire au deplacemet des fourmi
+  private final Object mMutexCouleurs = new Object();
+  // tableau des couleurs, il permet de conserver en memoire l'état de chaque
+  // pixel du canvas, ce qui est nécessaire au déplacement des fourmis
   // il sert aussi pour la fonction paint du Canvas
   private Color[][] mCouleurs;
   // couleur du fond
@@ -256,13 +256,13 @@ public class CPainting extends Canvas implements MouseListener {
       // simple clic = suspendre les calculs et l'affichage
       mApplis.pause();
     } else {
-      // bouton du milieu (roulette) = suspendre l'affichage mais
+      // bouton du milieu (roulette) = suspendre l'affichage, mais
       // continuer les calculs
       if (pMouseEvent.getButton() == MouseEvent.BUTTON2) {
         suspendre();
       } else {
         // clic bouton droit = effacer et recommencer
-        // case pMouseEvent.BUTTON3:
+        // case pMouseEvent.BUTTON3 :
         init();
       }
     }
@@ -287,7 +287,7 @@ public class CPainting extends Canvas implements MouseListener {
 
   /******************************************************************************
    * Titre : void paint(Graphics g) Description : Surcharge de la fonction qui
-   * est appelé lorsque le composant doit être redessiné
+   * est appelée lorsque le composant doit être redessiné
    ******************************************************************************/
   @Override
   public void paint(Graphics pGraphics) {

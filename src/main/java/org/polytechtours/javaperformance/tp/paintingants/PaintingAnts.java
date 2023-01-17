@@ -383,7 +383,7 @@ public class PaintingAnts extends java.applet.Applet implements Runnable {
     {
 
       int i;
-      Color lTabColor[] = new Color[lNbFourmis];
+      Color[] lTabColor = new Color[lNbFourmis];
       int lColor;
 
       // initialisation aléatoire de la couleur de chaque fourmi

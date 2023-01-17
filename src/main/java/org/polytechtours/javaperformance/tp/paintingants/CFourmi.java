@@ -7,32 +7,31 @@ import java.util.Random;
 
 public class CFourmi {
   // Tableau des incrémentations à effectuer sur la position des fourmis
-  // en fonction de la direction du deplacement
+  // en fonction de la direction du déplacement
   static private int[][] mIncDirection = new int[8][2];
-  // le generateur aléatoire (Random est thread safe donc on la partage)
+  // le générateur aléatoire (Random est thread safe donc on la partage)
   private static Random GenerateurAleatoire = new Random();
-  // couleur déposé par la fourmi
+  // couleur déposée par la fourmi
   private Color mCouleurDeposee;
   private float mLuminanceCouleurSuivie;
   // objet graphique sur lequel les fourmis peuvent peindre
   private CPainting mPainting;
-  // Coordonées de la fourmi
+  // Coordonnées de la fourmi
   private int x, y;
-  // Proba d'aller a gauche, en face, a droite, de suivre la couleur
+  // Proba d'aller à gauche, en face, à droite, de suivre la couleur
   private float[] mProba = new float[4];
   // Numéro de la direction dans laquelle la fourmi regarde
   private int mDirection;
   // Taille de la trace de phéromones déposée par la fourmi
   private int mTaille;
   // Pas d'incrémentation des directions suivant le nombre de directions
-  // allouées à la fourmies
+  // allouées à la fourmi
   private int mDecalDir;
   // l'applet
   private PaintingAnts mApplis;
   // seuil de luminance pour la détection de la couleur recherchée
   private float mSeuilLuminance;
   // nombre de déplacements de la fourmi
-  private long mNbDeplacements;
 
   /*************************************************************************************************
   */
@@ -85,11 +84,10 @@ public class CFourmi {
     CFourmi.mIncDirection[7][1] = -1;
 
     mSeuilLuminance = pSeuilLuminance;
-    mNbDeplacements = 0;
   }
 
   /*************************************************************************************************
-   * Titre : void deplacer() Description : Fonction de deplacement de la fourmi
+   * Titre : void deplacer() Description : Fonction de déplacement de la fourmi
    *
    */
   public synchronized void deplacer() {
@@ -97,12 +95,6 @@ public class CFourmi {
     int[] dir = new int[3];
     int i, j;
     Color lCouleur;
-
-    mNbDeplacements++;
-
-    dir[0] = 0;
-    dir[1] = 0;
-    dir[2] = 0;
 
     // le tableau dir contient 0 si la direction concernée ne contient pas la
     // couleur
@@ -144,7 +136,8 @@ public class CFourmi {
     tirage = GenerateurAleatoire.nextFloat();// Math.random();
 
     // la fourmi suit la couleur
-    if (((tirage <= mProba[3]) && ((dir[0] + dir[1] + dir[2]) > 0)) || ((dir[0] + dir[1] + dir[2]) == 3)) {
+    int dirSum = dir[0] + dir[1] + dir[2];
+    if (((tirage <= mProba[3]) && (dirSum > 0)) || (dirSum == 3)) {
       prob1 = (dir[0]) * mProba[0];
       prob2 = (dir[1]) * mProba[1];
       prob3 = (dir[2]) * mProba[2];
@@ -158,18 +151,15 @@ public class CFourmi {
     total = prob1 + prob2 + prob3;
     prob1 = prob1 / total;
     prob2 = prob2 / total + prob1;
-    prob3 = prob3 / total + prob2;
 
     // incrémentation de la direction de la fourmi selon la direction choisie
     tirage = GenerateurAleatoire.nextFloat();// Math.random();
     if (tirage < prob1) {
       mDirection = modulo(mDirection - mDecalDir, 8);
     } else {
-      if (tirage < prob2) {
-        /* rien, on va tout droit */
-      } else {
+      if (!(tirage < prob2)) {
         mDirection = modulo(mDirection + mDecalDir, 8);
-      }
+      }  /* rien, on va tout droit */
     }
 
     x += CFourmi.mIncDirection[mDirection][0];
@@ -185,35 +175,16 @@ public class CFourmi {
   }
 
   /*************************************************************************************************
-  */
-  public long getNbDeplacements() {
-    return mNbDeplacements;
-  }
-  /****************************************************************************/
-
-  /*************************************************************************************************
-  */
-  public int getX() {
-    return x;
-  }
-
-  /*************************************************************************************************
-  */
-  public int getY() {
-    return y;
-  }
-
-  /*************************************************************************************************
-   * Titre : modulo Description : Fcontion de modulo permettant au fourmi de
-   * reapparaitre de l autre coté du Canvas lorsque qu'elle sorte de ce dernier
+   * Titre : modulo Description : Fonction de modulo permettant à la fourmi de
+   * réapparaitre de l'autre côté du Canvas lorsque qu'elle sorte de ce dernier
    *
-   * @param x
+   * @param a
    *          valeur
    *
    * @return int
    */
-  private int modulo(int x, int m) {
-    return (x + m) % m;
+  private int modulo(int a, int m) {
+    return (a + m) % m;
   }
 
   /*************************************************************************************************
