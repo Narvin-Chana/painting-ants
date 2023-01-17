@@ -59,6 +59,7 @@ public class CPainting extends Canvas {
    * Titre : public CPainting() Description : Constructeur de la classe
    ******************************************************************************/
   public CPainting( Dimension pDimension, PaintingAnts pApplis) {
+    super(pDimension.width, pDimension.height);
     int i, j;
 
     addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mouseClicked(event));

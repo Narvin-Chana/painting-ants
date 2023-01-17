@@ -3,13 +3,12 @@ package org.polytechtours.javaperformance.tp.paintingants;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -98,21 +97,21 @@ public class PaintingAnts extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         Group root = new Group();
         // lecture des parametres de l'applet
 
-        mDimension = new Dimension(600, 600);
+        mDimension = new Dimension(400, 400);
         mLargeur = mDimension.width;
         mHauteur = mDimension.height;
 
         mPainting = new CPainting(mDimension, this);
 
         readParameterFourmis();
+        Scene scene = new Scene(root);
 
         root.getChildren().add(mPainting);
-        stage.setScene(new Scene(root));
-
+        stage.setScene(scene);
 
         stage.show();
 

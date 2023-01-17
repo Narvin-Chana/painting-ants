@@ -182,7 +182,7 @@ public class CFourmi {
     // coloration de la nouvelle position de la fourmi
     mPainting.setCouleur(x, y, mCouleurDeposee, mTaille);
 
-    mApplis.IncrementFpsCounter();
+//    mApplis.IncrementFpsCounter();
   }
 
   /*************************************************************************************************
