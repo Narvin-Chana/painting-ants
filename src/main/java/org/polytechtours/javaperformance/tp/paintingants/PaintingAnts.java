@@ -371,57 +371,37 @@ public class PaintingAnts extends java.applet.Applet implements Runnable {
             }
         } else // initialisation aléatoire des fourmis
         {
-
-            int i;
-            Color[] lTabColor = new Color[lNbFourmis];
-            int lColor;
-
-            // initialisation aléatoire de la couleur de chaque fourmi
-            for (i = 0; i < lNbFourmis; i++) {
-                R = (int) (Math.random() * 256);
-                G = (int) (Math.random() * 256);
-                B = (int) (Math.random() * 256);
-                lTabColor[i] = new Color(R, G, B);
-            }
-
-            // construction des fourmis
-            for (i = 0; i < lNbFourmis; i++) {
-                // la couleur suivie est la couleur d'une autre fourmi
-                lColor = (int) (Math.random() * lNbFourmis);
-                if (i == lColor) {
-                    lColor = (lColor + 1) % lNbFourmis;
-                }
-
-                // une chance sur deux d'avoir un déplacement perpendiculaire
-                if ((float) Math.random() < 0.5f) {
-                    lTypeDeplacement = 'd';
-                } else {
-                    lTypeDeplacement = 'o';
-                }
-
-                // position initiale
-                lInit_x = (float) (Math.random()); // *mPainting.getLargeur()
-                lInit_y = (float) (Math.random()); // *mPainting.getHauteur()
-
-                // direction initiale
-                lInitDirection = (int) (Math.random() * 8);
-
-                // taille du trait
-                lTaille = (int) (Math.random() * 4);
-
-                // proba de déplacement :
-                lProbaTD = (float) (Math.random());
-                lProbaG = (float) (Math.random() * (1.0 - lProbaTD));
-                lProbaD = (float) (1.0 - (lProbaTD + lProbaG));
-                lProbaSuivre = (float) (0.5 + 0.5 * Math.random());
-
+           Instance randomInstance = new Instance();
+           ArrayList<AntData> rawDataAnts = randomInstance.getRawDataAnts();
+            /* print(Instance)
                 System.out.print("Random:(" + lTabColor[i].getRed() + "," + lTabColor[i].getGreen() + "," + lTabColor[i].getBlue() + ")");
                 System.out.print("(" + lTabColor[lColor].getRed() + "," + lTabColor[lColor].getGreen() + "," + lTabColor[lColor].getBlue() + ")");
                 System.out.print("(" + lInit_x + "," + lInit_y + "," + lInitDirection + "," + lTaille + ")");
                 System.out.println("(" + lTypeDeplacement + "," + lProbaG + "," + lProbaTD + "," + lProbaD + "," + lProbaSuivre + ");");
+                */
 
+           Color droppedColor,followedColor;
+           float xStart,yStart;
+           int direction,trailSize;
+           float fwdProb,lftProb,rgtProb,followProb;
+           char moveType;
+
+           for(AntData rawAnt : rawDataAnts){
+               droppedColor = rawAnt.getDroppedColor();
+               followedColor = rawAnt.getFollowedColor();
+               xStart = rawAnt.getX();
+               yStart = rawAnt.getY();
+               direction = rawAnt.getDirection();
+               trailSize = rawAnt.getTrailSize();
+               fwdProb = rawAnt.getForwardProb();
+               lftProb = rawAnt.getLeftProb();
+               rgtProb = rawAnt.getRightProb();
+               followProb = rawAnt.getFollowProb();
+               moveType = rawAnt.getMoveType();
+
+               lFourmi = new CFourmi(droppedColor,followedColor,fwdProb,lftProb,rgtProb,followProb,
+                       mPainting,moveType,xStart,yStart,direction,trailSize,lSeuilLuminance,this);
                 // création et ajout de la fourmi dans la colonie
-                lFourmi = new CFourmi(lTabColor[i], lTabColor[lColor], lProbaTD, lProbaG, lProbaD, lProbaSuivre, mPainting, lTypeDeplacement, lInit_x, lInit_y, lInitDirection, lTaille, lSeuilLuminance, this);
                 synchronized (mColonie) {
                     mColonie.add(lFourmi);
                 }

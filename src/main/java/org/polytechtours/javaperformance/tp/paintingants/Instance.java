@@ -10,6 +10,10 @@ public class Instance {
     private int nbAnts;
     private ArrayList<AntData> rawDataAnts;
 
+    public ArrayList<AntData> getRawDataAnts() {
+        return rawDataAnts;
+    }
+
     /**
      * Create by default a random instance
      */

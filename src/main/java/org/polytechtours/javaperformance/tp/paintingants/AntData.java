@@ -41,5 +41,47 @@ public class AntData {
         }
     }
 
+    public Color getDroppedColor() {
+        return droppedColor;
+    }
 
+    public Color getFollowedColor() {
+        return followedColor;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public int getDirection() {
+        return direction;
+    }
+
+    public int getTrailSize() {
+        return trailSize;
+    }
+
+    public char getMoveType() {
+        return moveType;
+    }
+
+    public float getForwardProb() {
+        return forwardProb;
+    }
+
+    public float getLeftProb() {
+        return leftProb;
+    }
+
+    public float getRightProb() {
+        return rightProb;
+    }
+
+    public float getFollowProb() {
+        return followProb;
+    }
 }
