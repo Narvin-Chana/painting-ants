@@ -33,7 +33,7 @@ public class AntData {
         rightProb = (float) (1.0 - (forwardProb + leftProb));
         followProb = (float) (0.5 + 0.5 * randGen.nextFloat());
 
-        // une chance sur deux d'avoir un déplacement perpendiculaire
+        // 50% chance to have an oblique move
         if (randGen.nextFloat() < 0.5f) {
             moveType = 'd';
         } else {
