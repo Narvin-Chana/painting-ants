@@ -94,6 +94,7 @@ public class CFourmi {
    *
    */
   public synchronized void deplacer() {
+    System.out.println("deplacer");
     float tirage, prob1, prob2, prob3, total;
     int[] dir = new int[3];
     int i, j;

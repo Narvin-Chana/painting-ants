@@ -3,7 +3,6 @@ package org.polytechtours.javaperformance.tp.paintingants;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -416,7 +415,7 @@ public class PaintingAnts extends Application {
 
     public void startSimulation() {
         // System.out.println(this.getName()+ ":start()");
-        mColony = new CColonie(mColonie, this, mPainting);
+        mColony = new CColonie(mColonie, this);
         mThreadColony = new Thread(mColony);
         mThreadColony.setPriority(Thread.MIN_PRIORITY);
         mThreadColony.start();

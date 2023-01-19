@@ -16,13 +16,11 @@ public class CColonie implements Runnable {
   private Boolean mContinue = Boolean.TRUE;
   private Vector<CFourmi> mColonie;
   private PaintingAnts mApplis;
-  private final CPainting mPainting;
 
   /** Creates a new instance of CColonie */
-  public CColonie(Vector<CFourmi> pColonie, PaintingAnts pApplis, CPainting mPainting) {
+  public CColonie(Vector<CFourmi> pColonie, PaintingAnts pApplis) {
     mColonie = pColonie;
     mApplis = pApplis;
-    this.mPainting = mPainting;
   }
 
   public void pleaseStop() {
@@ -32,11 +30,11 @@ public class CColonie implements Runnable {
   @Override
   public void run() {
 
-    while (mContinue == true) {
+    while (mContinue) {
       if (!mApplis.getPause()) {
         for (int i = 0; i < mColonie.size(); i++) {
           mColonie.get(i).deplacer();
-          //mApplis.compteur();
+          mApplis.compteur();
         }
       } else {
         /*
