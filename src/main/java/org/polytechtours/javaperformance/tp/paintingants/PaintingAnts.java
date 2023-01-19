@@ -1,23 +1,29 @@
 package org.polytechtours.javaperformance.tp.paintingants;
 
-import javax.swing.*;
+import javafx.application.Application;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.Timer;
 
-public class PaintingAnts extends java.applet.Applet implements Runnable {
-    private static final long serialVersionUID = 1L;
+public class PaintingAnts extends Application {
+    // parametres
+    private int mLargeur;
+    private int mHauteur;
 
     // l'objet graphique lui meme
     private CPainting mPainting;
 
     // les fourmis
-    private final List<CFourmi> mColonie = Collections.synchronizedList(new ArrayList<>());
+    private final List<CFourmi> mColonie = new ArrayList<>();
     //private Vector<CFourmi> mColonie = new Vector<CFourmi>();
     private CColonie mColony;
 
@@ -40,6 +46,10 @@ public class PaintingAnts extends java.applet.Applet implements Runnable {
      */
     private Long lastFps = 0L;
 
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     /****************************************************************************/
     /**
      * incrémenter le compteur
@@ -50,37 +60,6 @@ public class PaintingAnts extends java.applet.Applet implements Runnable {
         }
     }
 
-    /****************************************************************************/
-    /**
-     * Détruire l'applet
-     */
-    @Override
-    public void destroy() {
-        // System.out.println(this.getName()+ ":destroy()");
-
-        if (mApplis != null) {
-            mApplis = null;
-        }
-    }
-
-    /****************************************************************************/
-    /**
-     * Obtenir l'information Applet
-     */
-    @Override
-    public String getAppletInfo() {
-        return "Painting Ants";
-    }
-
-    /****************************************************************************/
-    /**
-     * Obtenir l'information Applet
-     */
-
-    @Override
-    public String[][] getParameterInfo() {
-        return new String[][]{{"SeuilLuminance", "string", "Seuil de luminance"}, {"Img", "string", "Image"}, {"NbFourmis", "string", "Nombre de fourmis"}, {"Fourmis", "string", "Paramètres des fourmis (RGB_déposée)(RGB_suivie)(x,y,direction,taille)(TypeDeplacement,ProbaG,ProbaTD,ProbaD,ProbaSuivre);...;"}};
-    }
 
     /****************************************************************************/
     /**
@@ -94,65 +73,37 @@ public class PaintingAnts extends java.applet.Applet implements Runnable {
         fpsCounter++;
     }
 
-    /****************************************************************************/
-    /**
-     * Initialisation de l'applet
-     */
     @Override
-    public void init() {
-        URL lFileName;
-        URLClassLoader urlLoader = (URLClassLoader) this.getClass().getClassLoader();
-
+    public void start(Stage stage) {
+        Group root = new Group();
         // lecture des parametres de l'applet
 
-        mDimension = getSize();
-        // parametres
-        int mLargeur = mDimension.width;
-        int mHauteur = mDimension.height;
+        mDimension = new Dimension(400, 400);
+        mLargeur = mDimension.width;
+        mHauteur = mDimension.height;
 
         mPainting = new CPainting(mDimension, this);
-        add(mPainting);
-
-        // lecture de l'image
-        lFileName = urlLoader.findResource("images/" + getParameter("Img"));
-        try {
-            if (lFileName != null) {
-                mBaseImage = javax.imageio.ImageIO.read(lFileName);
-            }
-        } catch (java.io.IOException ignored) {
-        }
-
-        if (mBaseImage != null) {
-            mLargeur = mBaseImage.getWidth();
-            mHauteur = mBaseImage.getHeight();
-            mDimension.setSize(mLargeur, mHauteur);
-            resize(mDimension);
-        }
 
         readParameterFourmis();
+        Scene scene = new Scene(root);
 
-        setLayout(null);
+        root.getChildren().add(mPainting);
+        stage.setScene(scene);
+
+        stage.show();
+
+        mPainting.init();
+
+        startSimulation();
     }
 
-    /****************************************************************************/
-    /**
-     * Paint the image and all active highlights.
-     */
-    @Override
-    public void paint(Graphics g) {
-
-        if (mBaseImage == null) {
-            return;
-        }
-        g.drawImage(mBaseImage, 0, 0, this);
-    }
-    /****************************************************************************/
-    /****************************************************************************/
-    /****************************************************************************/
-    /****************************************************************************/
-    /****************************************************************************/
-    /****************************************************************************/
-    /****************************************************************************/
+  /****************************************************************************/
+  /****************************************************************************/
+  /****************************************************************************/
+  /****************************************************************************/
+  /****************************************************************************/
+  /****************************************************************************/
+  /****************************************************************************/
 
     /****************************************************************************/
     /**
@@ -237,7 +188,7 @@ public class PaintingAnts extends java.applet.Applet implements Runnable {
         // Lecture du seuil de luminance
         // <PARAM NAME="SeuilLuminance" VALUE="N">
         // N : seuil de luminance : -1 = random(2..60), x..y = random(x..y)
-        lChaine = getParameter("SeuilLuminance");
+        lChaine = null; //TODO: Luminance
         if (lChaine != null) {
             lSeuilLuminance = readFloatParameter(lChaine);
         } else {
@@ -249,7 +200,7 @@ public class PaintingAnts extends java.applet.Applet implements Runnable {
         // Lecture du nombre de fourmis :
         // <PARAM NAME="NbFourmis" VALUE="N">
         // N : nombre de fourmis : -1 = random(2..6), x..y = random(x..y)
-        lChaine = getParameter("NbFourmis");
+        lChaine = null;// TODO; NbFourmis
         if (lChaine != null) {
             lNbFourmis = readIntParameter(lChaine);
         } else {
@@ -278,7 +229,7 @@ public class PaintingAnts extends java.applet.Applet implements Runnable {
         // type deplacement = o/d : -1 = random(o/d)
         // probas : -1 = random(0.0 ... 1.0); x:y = random(x...y)
 
-        lChaine = getParameter("Fourmis");
+        lChaine = null;//TODO: Fourmis
         if (lChaine != null) {
             // on affiche la chaine de parametres
             System.out.println("Paramètres:" + lChaine);
@@ -305,7 +256,7 @@ public class PaintingAnts extends java.applet.Applet implements Runnable {
                 if (B == -1) {
                     B = (int) (Math.random() * 256);
                 }
-                lCouleurDeposee = new Color(R, G, B);
+                lCouleurDeposee = Color.rgb(R, G, B);
                 System.out.print("Parametres de la fourmi " + lNbFourmis + ":(" + R + "," + G + "," + B + ")");
 
                 // lecture de la couleur suivie
@@ -313,7 +264,7 @@ public class PaintingAnts extends java.applet.Applet implements Runnable {
                 R = readIntParameter(lSTCouleurSuivi.nextToken());
                 G = readIntParameter(lSTCouleurSuivi.nextToken());
                 B = readIntParameter(lSTCouleurSuivi.nextToken());
-                lCouleurSuivie = new Color(R, G, B);
+                lCouleurSuivie = Color.rgb(R, G, B);
                 System.out.print("(" + R + "," + G + "," + B + ")");
 
                 // lecture de la position de la direction de départ et de la taille de
@@ -360,13 +311,13 @@ public class PaintingAnts extends java.applet.Applet implements Runnable {
                 lProbaTD /= lSomme;
                 lProbaD /= lSomme;
 
-                System.out.println("(" + lTypeDeplacement + "," + lProbaG + "," + lProbaTD + "," + lProbaD + "," + lProbaSuivre + ");");
+                System.out.println(
+                        "(" + lTypeDeplacement + "," + lProbaG + "," + lProbaTD + "," + lProbaD + "," + lProbaSuivre + ");");
 
                 // création de la fourmi
-                lFourmi = new CFourmi(lCouleurDeposee, lCouleurSuivie, lProbaTD, lProbaG, lProbaD, lProbaSuivre, mPainting, lTypeDeplacement, lInit_x, lInit_y, lInitDirection, lTaille, lSeuilLuminance, this);
-                synchronized (mColonie) {
-                    mColonie.add(lFourmi);
-                }
+                lFourmi = new CFourmi(lCouleurDeposee, lCouleurSuivie, lProbaTD, lProbaG, lProbaD, lProbaSuivre, mPainting,
+                        lTypeDeplacement, lInit_x, lInit_y, lInitDirection, lTaille, lSeuilLuminance, this);
+                mColonie.add(lFourmi);
                 lNbFourmis++;
             }
         } else // initialisation aléatoire des fourmis
@@ -411,76 +362,36 @@ public class PaintingAnts extends java.applet.Applet implements Runnable {
         // System.out.println("Nombre de Fourmis:"+lNbFourmis);
     }
 
-    /*************************************************************************************************
-     * Titre : boolean testCouleur() Description : fonction testant l'égalité de
-     * deux couleurs
-     *
-     */
-    @Override
-    public void run() {
-        // System.out.println(this.getName()+ ":run()");
 
-        int i;
-        StringBuilder lMessage;
-
-        mPainting.init();
-
-        Thread currentThread = Thread.currentThread();
-
-        /*
-         * for ( i=0 ; i<mColonie.size() ; i++ ) {
-         * ((CFourmi)mColonie.elementAt(i)).start(); }
-         */
-
-        mThreadColony.start();
-
-        while (mApplis == currentThread) {
-            if (mPause) {
-                lMessage = new StringBuilder("pause");
-            } else {
-                synchronized (this) {
-                    lMessage = new StringBuilder("running (" + lastFps + ") ");
-                }
-
-                synchronized (mMutexCompteur) {
-                    mCompteur %= 10000;
-                    for (i = 0; i < mCompteur / 1000; i++) {
-                        lMessage.append(".");
-                    }
-                }
-
-            }
-            showStatus(lMessage.toString());
-
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                showStatus(e.toString());
-            }
-        }
-    }
 
     /****************************************************************************/
     /**
      * Lancer l'applet
      */
-    @Override
-    public void start() {
+
+    public void startSimulation() {
         // System.out.println(this.getName()+ ":start()");
         mColony = new CColonie(mColonie, this);
         mThreadColony = new Thread(mColony);
         mThreadColony.setPriority(Thread.MIN_PRIORITY);
+        mThreadColony.start();
 
-        fpsTimer = new Timer(1000, e -> updateFPS());
-        fpsTimer.setRepeats(true);
-        fpsTimer.start();
 
-        showStatus("starting...");
+        // fpsTimer = new Timer(1000, new ActionListener() {
+        //     @Override
+        //     public void actionPerformed(ActionEvent e) {
+        //         updateFPS();
+        //     }
+        // });
+        // fpsTimer.setRepeats(true);
+        // fpsTimer.start();
+
+        //showStatus("starting...");
         // Create the thread.
-        mApplis = new Thread(this);
-        // and let it start running
-        mApplis.setPriority(Thread.MIN_PRIORITY);
-        mApplis.start();
+        // mApplis = new Thread(new SimulationThread(mMutexCompteur, mPainting, mThreadColony));
+        // // and let it start running
+        // mApplis.setPriority(Thread.MIN_PRIORITY);
+        // mApplis.start();
     }
 
     /****************************************************************************/
@@ -489,9 +400,9 @@ public class PaintingAnts extends java.applet.Applet implements Runnable {
      */
     @Override
     public void stop() {
-        showStatus("stopped...");
+        //showStatus("stopped...");
 
-        fpsTimer.stop();
+        fpsTimer.cancel();
 
         // On demande au Thread Colony de s'arreter et on attend qu'il s'arrete
         mColony.pleaseStop();

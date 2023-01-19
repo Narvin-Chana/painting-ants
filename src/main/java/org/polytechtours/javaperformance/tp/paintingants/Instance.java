@@ -1,6 +1,7 @@
 package org.polytechtours.javaperformance.tp.paintingants;
 
-import java.awt.*;
+import javafx.scene.paint.Color;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -36,7 +37,7 @@ public class Instance {
             R = randGenerator.nextInt( 256);
             G = randGenerator.nextInt( 256);
             B = randGenerator.nextInt(256);
-            colorTab[i] = new Color(R, G, B);
+            colorTab[i] = Color.rgb(R, G, B);
         }
 
         for(i = 0; i<nbAnts; i++){
